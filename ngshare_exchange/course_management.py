@@ -149,6 +149,14 @@ def create_course(args):
     prGreen('Successfully created {}'.format(args.course_id))
 
 
+def remove_course(args):
+    url = '/course/{}'.format(args.course_id)
+    data = {'user': get_username()}
+
+    response = delete(url, data)
+    prGreen('Successfully removed {}'.format(args.course_id))
+
+
 def add_student(args):
     # add student to ngshare
     check_username_warning([args.student_id])
@@ -330,6 +338,16 @@ def parse_args(argv):
         help='List of instructors assigned to the course',
     )
     create_course_parser.set_defaults(func=create_course)
+
+    remove_course_parser = subparsers.add_parser(
+        'remove_course', help='Remove a course'
+    )
+    remove_course_parser.add_argument(
+        'course_id',
+        metavar='COURSE_ID',
+        help='Course ID of the course to remove',
+    )
+    remove_course_parser.set_defaults(func=remove_course)
 
     add_instructor_parser = subparsers.add_parser(
         'add_instructor', help='Add/update one instructor for a course'
